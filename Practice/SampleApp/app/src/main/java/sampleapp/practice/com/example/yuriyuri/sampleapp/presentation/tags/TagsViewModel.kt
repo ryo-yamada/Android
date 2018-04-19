@@ -45,5 +45,13 @@ class TagsViewModel {
         * データ取得開始 -> Result.inProgress()を通知 -> データ(List<TagModel>)通知
         * */
         // TODO:return <Result<List<TagModel>>>?
+        return repository.refreshTags(nextPage, 10, "count")
+                .compose { it ->
+                    it
+                            .map { Result.success(it) }
+                            .onErrorReturn { e -> Result.failure(e.message ?: "un known", e) }
+                            .observeOn(appSchedulerProvider.ui())
+                            .startWith(Result.inProgress())
+                }
     }
 }
