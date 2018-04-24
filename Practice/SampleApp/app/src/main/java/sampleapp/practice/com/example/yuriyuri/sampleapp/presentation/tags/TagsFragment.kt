@@ -3,6 +3,7 @@ package sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.tags
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import sampleapp.practice.com.example.yuriyuri.model.TagModel
 import sampleapp.practice.com.example.yuriyuri.sampleapp.R
 import sampleapp.practice.com.example.yuriyuri.sampleapp.databinding.FragmentTagsBinding
 import sampleapp.practice.com.example.yuriyuri.sampleapp.databinding.ItemTagBinding
+import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.Result
 import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.common.view.ArrayRecyclerAdapter
 import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.common.view.BindingHolder
 import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.common.view.SpaceItemDecoration
@@ -50,6 +52,19 @@ class TagsFragment :
         * ロード完了(失敗)：トーストでエラーメッセージを表示
         * */
         // TODO:loadTagList and handling tagList
+        tagsViewModel.loadTagList(1)!!.subscribe(){
+            it ->
+            when(it){
+                is Result.InProgress -> {it.inProgress}
+                is Result.Success -> {
+                    renderViews(it.data)
+                }
+                is Result.Failure ->{
+                    Log.d("Failure", it.errorMessage)
+                }
+            }
+        }
+
     }
 
     /**
