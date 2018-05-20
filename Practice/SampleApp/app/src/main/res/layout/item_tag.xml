@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="tag"
+            type="sampleapp.practice.com.example.yuriyuri.model.TagModel" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/card_background_color"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/card_background_color"
+            android:padding="@dimen/base_margin">
+
+            <ImageView
+                android:id="@+id/tag_image"
+                android:layout_width="@dimen/tag_image_width"
+                android:layout_height="@dimen/tag_image_height"
+                app:imageUrl='@{tag.iconImage}' />
+
+            <TextView
+                android:id="@+id/tag_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_margin"
+                android:text="@{tag.tagId}"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/tag_list_title"
+                app:layout_constraintStart_toEndOf="@id/tag_image"
+                tools:text="Android" />
+
+            <TextView
+                android:id="@+id/tag_followers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_margin"
+                android:text='@{"フォロワー：" + tag.followersCount}'
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/tag_list_sub_text"
+                app:layout_constraintStart_toEndOf="@id/tag_image"
+                app:layout_constraintTop_toBottomOf="@id/tag_name"
+                tools:text="フォロワー：10" />
+
+            <TextView
+                android:id="@+id/tag_contributions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_margin"
+                android:text='@{"投稿数：" + tag.itemsCount}'
+                android:textSize="@dimen/tag_list_sub_text"
+                app:layout_constraintStart_toEndOf="@id/tag_followers"
+                app:layout_constraintTop_toBottomOf="@id/tag_name"
+                tools:text="投稿数：10" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</layout>
