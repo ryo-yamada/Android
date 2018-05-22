@@ -7,6 +7,7 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import sampleapp.practice.com.example.yuriyuri.sampleapp.di.module.ActivityModule
 import sampleapp.practice.com.example.yuriyuri.sampleapp.di.module.AppModule
+import sampleapp.practice.com.example.yuriyuri.sampleapp.di.module.NetworkModule
 import sampleapp.practice.com.example.yuriyuri.sampleapp.di.module.ViewModelModule
 import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.SampleApp
 import javax.inject.Singleton
@@ -22,7 +23,8 @@ import javax.inject.Singleton
     AppModule::class,
     // 利用するModuleを追加する.
     ActivityModule::class,
-    ViewModelModule::class])
+    ViewModelModule::class,
+    NetworkModule::class])
 interface AppComponent : AndroidInjector<SampleApp> {
 
     @Component.Builder

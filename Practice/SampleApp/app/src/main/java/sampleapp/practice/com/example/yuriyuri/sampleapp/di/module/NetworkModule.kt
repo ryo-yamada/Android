@@ -1,28 +1,31 @@
-package sampleapp.practice.com.example.yuriyuri.sampleapp.data.api
+package sampleapp.practice.com.example.yuriyuri.sampleapp.di.module
 
 import com.squareup.moshi.Moshi
+import dagger.Module
+import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import sampleapp.practice.com.example.yuriyuri.sampleapp.data.api.ApplicationJsonAdapterFactory
+import sampleapp.practice.com.example.yuriyuri.sampleapp.data.api.QiitaApi
 import javax.inject.Singleton
 
 /**
  * NWクライアント提供クラス.</br>
  * APIに実際にアクセスする処理を提供する.
  */
-open class NetworkClient {
-
-    companion object {
-        val instance = NetworkClient()
-    }
+@Module
+open class NetworkModule {
 
     @Singleton
-    private fun provideOkHttpClient()
+    @Provides
+    fun provideOkHttpClient()
             : OkHttpClient = OkHttpClient.Builder().build()
 
     @Singleton
-    private fun provideRetrofit(okHttpClient: OkHttpClient)
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient)
             : Retrofit {
         return Retrofit.Builder()
                 .client(okHttpClient)
@@ -35,8 +38,8 @@ open class NetworkClient {
     }
 
     @Singleton
-    fun provideQiitaApi(): QiitaApi {
-        val retrofit = provideRetrofit(provideOkHttpClient())
+    @Provides
+    fun provideQiitaApi(retrofit: Retrofit): QiitaApi {
         return retrofit.create(QiitaApi::class.java)
     }
 }
