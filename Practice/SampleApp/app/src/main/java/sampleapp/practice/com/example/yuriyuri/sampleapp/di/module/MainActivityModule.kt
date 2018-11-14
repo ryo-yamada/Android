@@ -1,19 +1,22 @@
 package sampleapp.practice.com.example.yuriyuri.sampleapp.di.module
 
-import android.support.v7.app.AppCompatActivity
+import android.arch.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.MainActivity
+import dagger.multibindings.IntoMap
+import sampleapp.practice.com.example.yuriyuri.sampleapp.di.annotaion.ViewModelKey
 import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.tags.TagsFragment
+import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.tags.TagsViewModel
 
 @Module
-interface MainActivityModule {
-
-    @Binds
-    fun providesAppCompatActivity(mainActivity: MainActivity): AppCompatActivity
-
+internal abstract class MainActivityModule {
 
     @ContributesAndroidInjector
-    fun contributeTagsFragment(): TagsFragment
+    abstract fun contributeTagsFragment(): TagsFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TagsViewModel::class)
+    abstract fun bindTagsViewModel(viewModel: TagsViewModel): ViewModel
 }

@@ -1,5 +1,7 @@
 package sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.tags
 
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -25,8 +27,10 @@ import javax.inject.Inject
 class TagsFragment :
         DaggerFragment() {
 
-    /** ViewModel */
     @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    /** ViewModel */
     lateinit var tagsViewModel: TagsViewModel
 
     /** DataBinding */
@@ -45,6 +49,9 @@ class TagsFragment :
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setupRecyclerView()
+
+        tagsViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(TagsViewModel::class.java)
+
         // Tagデータの取得
         tagsViewModel.loadTagList(1)
                 .subscribe {

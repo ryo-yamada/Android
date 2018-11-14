@@ -1,5 +1,6 @@
 package sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.tags
 
+import android.arch.lifecycle.ViewModel
 import io.reactivex.Flowable
 import sampleapp.practice.com.example.yuriyuri.model.TagModel
 import sampleapp.practice.com.example.yuriyuri.sampleapp.data.repository.TagRepository
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class TagsViewModel @Inject constructor(
         private val repository: TagRepository,
         private val appSchedulerProvider: SchedulerProvider
-){
+) : ViewModel() {
 
     /**
      * タグデータを取得
