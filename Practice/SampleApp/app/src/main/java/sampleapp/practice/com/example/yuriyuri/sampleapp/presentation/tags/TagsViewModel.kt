@@ -17,6 +17,8 @@ class TagsViewModel @Inject constructor(
         private val appSchedulerProvider: SchedulerProvider
 ) : ViewModel() {
 
+    // 課題1：Result<List<TagModel>>をLiveDataを利用してObservableに変更してください
+
     /**
      * タグデータを取得
      *

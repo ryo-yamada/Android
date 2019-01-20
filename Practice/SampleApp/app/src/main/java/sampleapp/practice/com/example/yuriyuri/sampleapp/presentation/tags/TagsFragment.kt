@@ -52,7 +52,7 @@ class TagsFragment :
 
         tagsViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(TagsViewModel::class.java)
 
-        // Tagデータの取得
+        // 課題2：課題1で作成したLiveDataをobserveしてViewを更新するように変更してください。
         tagsViewModel.loadTagList(1)
                 .subscribe {
                     when (it) {
