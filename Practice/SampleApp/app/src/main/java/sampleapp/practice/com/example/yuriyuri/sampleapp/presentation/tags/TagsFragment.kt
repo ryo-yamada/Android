@@ -1,5 +1,6 @@
 package sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.tags
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -53,21 +54,21 @@ class TagsFragment :
         tagsViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(TagsViewModel::class.java)
 
         // 課題2：課題1で作成したLiveDataをobserveしてViewを更新するように変更してください。
-        tagsViewModel.loadTagList(1)
-                .subscribe {
-                    when (it) {
-                        is Result.Success -> {
-                            renderViews(it.data)
-                        }
-                        is Result.Failure -> {
-                            Toast.makeText(this.context, it.errorMessage, Toast.LENGTH_SHORT).show()
-                        }
-                        is Result.InProgress -> {
-                            binding.progress.visibility = View.VISIBLE
-                        }
-                    }
+        val observer = Observer<Result<List<TagModel>>> { it
+            when (it) {
+                is Result.Success -> {
+                    renderViews(it.data)
                 }
-                .addTo(compositeDisposable)
+                is Result.Failure -> {
+                    Toast.makeText(this.context, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+                is Result.InProgress -> {
+                    binding.progress.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        tagsViewModel.loadTagList(1).observe(this, observer)
     }
 
     override fun onStop() {
