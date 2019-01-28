@@ -9,6 +9,7 @@ class RecipeApi {
   // 環境によって変更する
   // iOSのパス
   static const String _ios_path = "http://127.0.0.1:3000/recipe";
+
   // androidのパス
   static const String _android_path = "http://10.0.2.2:3000/recipe";
 
@@ -29,12 +30,7 @@ class RecipeApi {
     }
   }
 
-  String _getApiPath(){
-    if (Platform.isAndroid){
-      return _android_path;
-    } else if (Platform.isIOS){
-      return _ios_path;
-    }
-    return null;
+  String _getApiPath() {
+    return Platform.isAndroid ? _android_path : _ios_path;
   }
 }
