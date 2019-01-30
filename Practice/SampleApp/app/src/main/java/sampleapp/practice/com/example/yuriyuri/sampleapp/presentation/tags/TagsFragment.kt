@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
 import sampleapp.practice.com.example.yuriyuri.model.TagModel
 import sampleapp.practice.com.example.yuriyuri.sampleapp.R
 import sampleapp.practice.com.example.yuriyuri.sampleapp.databinding.FragmentTagsBinding
@@ -32,7 +31,7 @@ class TagsFragment :
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     /** ViewModel */
-    lateinit var tagsViewModel: TagsViewModel
+    private lateinit var tagsViewModel: TagsViewModel
 
     /** DataBinding */
     private lateinit var binding: FragmentTagsBinding
@@ -54,7 +53,7 @@ class TagsFragment :
         tagsViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(TagsViewModel::class.java)
 
         // 課題2：課題1で作成したLiveDataをobserveしてViewを更新するように変更してください。
-        val observer = Observer<Result<List<TagModel>>> { it
+        val observer = Observer<Result<List<TagModel>>> { it ->
             when (it) {
                 is Result.Success -> {
                     renderViews(it.data)
@@ -68,7 +67,7 @@ class TagsFragment :
             }
         }
 
-        tagsViewModel.loadTagList(1).observe(this, observer)
+        tagsViewModel.refreshResult.observe(this, observer)
     }
 
     override fun onStop() {
