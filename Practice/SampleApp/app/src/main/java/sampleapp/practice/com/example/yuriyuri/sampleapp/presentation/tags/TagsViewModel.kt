@@ -3,7 +3,7 @@ package sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.tags
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import io.reactivex.Flowable
+import io.reactivex.rxkotlin.subscribeBy
 import sampleapp.practice.com.example.yuriyuri.model.TagModel
 import sampleapp.practice.com.example.yuriyuri.sampleapp.data.repository.TagRepository
 import sampleapp.practice.com.example.yuriyuri.sampleapp.presentation.Result
@@ -23,31 +23,25 @@ class TagsViewModel @Inject constructor(
     private val mutableState: MutableLiveData<Result<List<TagModel>>> = MutableLiveData()
     val refreshResult: LiveData<Result<List<TagModel>>> = mutableState
 
-//    /**
-//     * タグデータを取得
-//     *
-//     * @param nextPage 何ページ目か
-//     */
-//    fun loadTagList(nextPage: Int): Flowable<Result<List<TagModel>>> {
-//        return repository.refreshTags(nextPage, 20, "count")
-//                .map {
-//                    Result.success(it)
-//                }.onErrorReturn { e -> Result.failure(e.message ?: "unknown", e) }
-//                .observeOn(appSchedulerProvider.ui())
-//                .startWith(Result.inProgress())
-//    }
-//
+    init {
+        loadTagList(1)
+    }
     /**
      * タグデータを取得
      *
      * @param nextPage 何ページ目か
      */
-    fun loadTagList(nextPage: Int): LiveData<Result<List<TagModel>>> {
-                repository.refreshTags(nextPage, 20, "count")
-                .map {
-                    mutableState.postValue(Result.success(it))
-                }.observeOn(appSchedulerProvider.ui())
-
-        return  mutableState
+    private fun loadTagList(nextPage: Int) {
+        repository.refreshTags(nextPage, 20, "count")
+                .subscribeOn(appSchedulerProvider.io())
+                .subscribeBy(
+                        onNext = {
+                            mutableState.postValue(Result.success(it))
+                        },
+                        onError = { e ->
+                            Result.failure<List<TagModel>>(e.message ?: "unknown", e)
+                        }
+                )
     }
+
 }
